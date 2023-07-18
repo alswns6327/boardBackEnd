@@ -1,31 +1,28 @@
 package com.board.demo.controller;
 
-import com.board.demo.model.dao.TestDao;
+import com.board.demo.model.dto.MemberRequestDto;
+import com.board.demo.model.dto.MemberResponseDto;
 import com.board.demo.model.dto.TestDto;
-import com.board.demo.service.TestService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import com.board.demo.model.entity.Test;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
+@RequestMapping("/api")
 public class TestController {
 
-    @Autowired
-    private TestService testService;
 
-    @GetMapping("/api/test")
-    public @ResponseBody Map<String, Object> test() throws Exception{
-        Map<String, Object> returnMap = new HashMap<>();
+    private final com.board.demo.service.Test test;
 
-        List<TestDto> returnDto = testService.selectTest();
 
-        returnMap.put("testValue", returnDto);
-
-        return returnMap;
+    @GetMapping("/test")
+    public ResponseEntity<List<Test>> setMemberNickname() {
+        System.out.println(111);
+        return ResponseEntity.ok(test.find());
     }
+
 }

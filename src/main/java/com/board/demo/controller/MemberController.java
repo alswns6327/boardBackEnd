@@ -1,33 +1,36 @@
 package com.board.demo.controller;
 
-import com.board.demo.scurity.auth.MemberDetails;
-import com.board.demo.scurity.auth.MemberDtailService;
+import com.board.demo.model.dto.ChangePasswordRequestDto;
+import com.board.demo.model.dto.MemberRequestDto;
+import com.board.demo.model.dto.MemberResponseDto;
+import com.board.demo.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
+@RequestMapping("/member")
 public class MemberController {
 
-    @Autowired
-    MemberDtailService memberDtailService;
+    private final MemberService memberService;
 
-    @PostMapping("/api/member/save")
-    public String save(@RequestBody Map<String, Object> userInfo){
-        String url = "aa";
-        if(memberDtailService.save(userInfo) > 0){
-            url = "good";
-        }
-
-        return url;
+    @GetMapping("/me")
+    public ResponseEntity<MemberResponseDto> getMyMemberInfo() {
+        MemberResponseDto myInfoBySecurity = memberService.getMyInfoBySecurity();
+        System.out.println(myInfoBySecurity.getNickname());
+        return ResponseEntity.ok((myInfoBySecurity));
+        // return ResponseEntity.ok(memberService.getMyInfoBySecurity());
     }
 
-    @PostMapping("/api/member/count-email")
-    public String countByEmailAndDropYn(Model model, MemberDetails member){
-        return "aaa";
+    @PostMapping("/nickname")
+    public ResponseEntity<MemberResponseDto> setMemberNickname(@RequestBody MemberRequestDto request) {
+        return ResponseEntity.ok(memberService.changeMemberNickname(request.getEmail(), request.getNickname()));
     }
+
+    @PostMapping("/password")
+    public ResponseEntity<MemberResponseDto> setMemberPassword(@RequestBody ChangePasswordRequestDto request) {
+        return ResponseEntity.ok(memberService.changeMemberPassword(request.getEmail(), request.getExPassword(), request.getNewPassword()));
+    }
+
 }
