@@ -43,8 +43,8 @@ public class WebSecurityConfig {
 
                 .and()
                 .authorizeRequests()
-                .requestMatchers("/**").permitAll()
-//                .anyRequest().authenticated()
+                .requestMatchers("/auth/**").permitAll()
+                .anyRequest().authenticated()
 
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));
