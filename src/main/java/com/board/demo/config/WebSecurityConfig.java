@@ -43,7 +43,7 @@ public class WebSecurityConfig {
 
                 .and()
                 .authorizeRequests()
-                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/api/auth/**", "/api/test/**").permitAll()
                 .anyRequest().authenticated()
 
                 .and()
